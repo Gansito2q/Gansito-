@@ -57,8 +57,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .detail-info h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 10px; color: var(--text); }
 .detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; text-align: left;}
 
-.ad-space-small {margin: 20px auto; display: flex; justify-content: center; align-items: center; min-height: 50px; overflow: hidden;}
+/* Cajas para los anuncios */
+.ad-space-small {margin: 0 auto 20px auto; display: flex; justify-content: center; align-items: center; min-height: 50px; overflow: hidden;}
 .ad-space-small iframe { width: 320px; height: 50px; border: none; background: transparent; }
+
+.ad-space-large {margin: 20px auto; display: flex; justify-content: center; align-items: center; min-height: 250px; overflow: hidden;}
+.ad-space-large iframe { width: 300px; height: 250px; border: none; background: transparent; }
 
 .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 .btn-dl { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1.05rem; border: none;}
@@ -105,6 +109,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
     <span id="dTitleNav">Cargando...</span>
   </div>
   <div class="detail-content">
+    
+    <!-- ANUNCIO PEQUEÑO (320x50) ARRIBA DE LA IMAGEN -->
+    <div class="ad-space-small" id="ad-small-container"></div>
+
     <div class="img-container">
       <img id="dImg" class="detail-img" src="">
     </div>
@@ -114,8 +122,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
       <p id="dDesc"></p>
     </div>
 
-    <!-- BANNER 320x50 (Iframe para evitar bloqueos) -->
-    <div class="ad-space-small" id="ad-small-container"></div>
+    <!-- ANUNCIO GRANDE (300x250) ABAJO DE LA DESCRIPCIÓN -->
+    <div class="ad-space-large" id="ad-large-container"></div>
 
     <div class="action-buttons">
       <a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a>
@@ -223,7 +231,7 @@ function abrirJuego(juego){
   dLink.href=juego.link||'#';
   shareText.textContent = "Compartir este Juego";
   
-  // Inyectar el banner de 320x50 en la vista del juego usando un Iframe
+  // 1. Inyectar el banner PEQUEÑO (320x50) ARRIBA DE LA IMAGEN
   const adSmallContainer = document.getElementById('ad-small-container');
   adSmallContainer.innerHTML = ''; 
   const iframeSmall = document.createElement('iframe');
@@ -242,6 +250,26 @@ function abrirJuego(juego){
     </html>
   `);
   iframeSmallDoc.close();
+
+  // 2. Inyectar el banner GRANDE (300x250) ABAJO DE LA DESCRIPCIÓN
+  const adLargeContainer = document.getElementById('ad-large-container');
+  adLargeContainer.innerHTML = ''; 
+  const iframeLarge = document.createElement('iframe');
+  adLargeContainer.appendChild(iframeLarge);
+  const iframeLargeDoc = iframeLarge.contentWindow.document;
+  iframeLargeDoc.open();
+  iframeLargeDoc.write(`
+    <html>
+      <head><style>body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:transparent;}</style></head>
+      <body>
+        <script type="text/javascript">
+          atOptions = { 'key' : '08157240a7221626e752c94138bd22e1', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+        <\/script>
+        <script type="text/javascript" src="https://www.highrevenueformat.com/08157240a7221626e752c94138bd22e1/invoke.js"><\/script>
+      </body>
+    </html>
+  `);
+  iframeLargeDoc.close();
 
   gameDetail.classList.add('active');
   document.body.style.overflow = 'hidden'; 
@@ -270,4 +298,4 @@ shareBtn.onclick = async () => {
 load();
 </script>
 </body>
-                                                                                                                                 </html>
+  </html>

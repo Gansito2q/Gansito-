@@ -65,7 +65,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .detail-info h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 10px; color: var(--text); }
 .detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; text-align: left;}
 
-/* Caja para el Banner 320x50 */
 .ad-space-small {margin: 20px auto; display: flex; justify-content: center; align-items: center; min-height: 50px; overflow: hidden;}
 
 .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
@@ -122,7 +121,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
       <p id="dDesc"></p>
     </div>
 
-    <!-- BANNER 320x50 (Justo antes del botón de descarga) -->
+    <!-- BANNER 320x50 -->
     <div class="ad-space-small">
       <script type="text/javascript">
         atOptions = { 'key' : '2495b9337539202227cb9195a6ab2b97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
@@ -158,6 +157,9 @@ const grid=document.getElementById('grid'),gameDetail=document.getElementById('g
 const dImg=document.getElementById('dImg'),dTitle=document.getElementById('dTitle'),dDesc=document.getElementById('dDesc'),dLink=document.getElementById('dLink'),dTitleNav=document.getElementById('dTitleNav');
 const shareBtn=document.getElementById('shareBtn'),shareText=document.getElementById('shareText');
 let allGames = [], currentGameId = null;
+
+// Imagen por defecto si el juego no tiene portada
+const defaultImg = "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400&auto=format&fit=crop";
 
 // --- SISTEMA DE POPUNDER ---
 let popunderEjecutado = false;
@@ -212,14 +214,16 @@ async function load(){
   }
 }
 
-// --- RENDERIZADO CON ANUNCIO 300x250 CADA 5 JUEGOS ---
+// --- RENDERIZADO CON HTML FIJO PARA LOS ANUNCIOS ---
 function renderGames(juegos){
   grid.innerHTML='';
   if(juegos.length === 0){ grid.innerHTML='<div class="msg">No hay juegos.</div>'; return; }
   
   juegos.forEach((j, index)=>{
     const c=document.createElement('div');c.className='card';
-    c.innerHTML=`<div class="img-wrap"><img src="${j.portada||'https://via.placeholder.com/400x600/1a1b22/ff3366?text=Gansito'}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
+    // Si no hay portada, se usa la defaultImg
+    const portadaUrl = j.portada ? j.portada : defaultImg;
+    c.innerHTML=`<div class="img-wrap"><img src="${portadaUrl}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
     c.onclick=()=> abrirJuego(j);
     grid.appendChild(c);
 
@@ -227,11 +231,12 @@ function renderGames(juegos){
     if ((index + 1) % 5 === 0 && (index + 1) < juegos.length) {
       const adDiv = document.createElement('div');
       adDiv.className = 'ad-grid-item';
+      // INYECCIÓN SEGURA DE ANUNCIO
       adDiv.innerHTML = `
         <script type="text/javascript">
           atOptions = { 'key' : '08157240a7221626e752c94138bd22e1', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
         <\/script>
-        <script type="text/javascript" src="https://www.highrevenueformat.com/08157240a7221626e752c94138bd22e1/invoke.js" async><\/script>
+        <script type="text/javascript" src="https://www.highrevenueformat.com/08157240a7221626e752c94138bd22e1/invoke.js"><\/script>
       `;
       grid.appendChild(adDiv);
     }
@@ -240,7 +245,7 @@ function renderGames(juegos){
 
 function abrirJuego(juego){
   currentGameId = juego.id;
-  dImg.src=juego.portada||'https://via.placeholder.com/400x600/1a1b22/ff3366?text=Gansito';
+  dImg.src=juego.portada ? juego.portada : defaultImg;
   dTitle.textContent=juego.titulo||'Sin título';
   dTitleNav.textContent=juego.titulo||'Juego';
   dDesc.textContent=juego.descripcion||'Sin descripción';
@@ -273,4 +278,4 @@ shareBtn.onclick = async () => {
 load();
 </script>
 </body>
-  </html>
+      </html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f1015">
+<title>Gansito</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* Variables globales */
+:root{--bg:#0f1015;--card:#1a1b22;--text:#fff;--muted:#9ca3af;--accent:#ff3366;--nav:#15161c;--in:#23242c}
+[data-theme="light"]{--bg:#f3f4f6;--card:#fff;--text:#111827;--muted:#6b7280;--nav:#ffffff;--in:#e5e7eb}
+
+/* Reset y estilos base */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent;overflow-x:hidden;}
+
+/* --- PANTALLA DE ADVERTENCIA (AGE GATE) --- */
+#ageGate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0a0a0f;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.age-box {
+  background: var(--card); padding: 30px 20px;
+  border-radius: 16px; text-align: center;
+  max-width: 400px; width: 100%;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.age-box h2 { font-size: 1.5rem; margin-bottom: 10px; color: #fff; text-transform: uppercase;}
+.age-box p { color: var(--muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 25px; }
+.age-btns { display: flex; flex-direction: column; gap: 12px; }
+.btn-age-yes { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+.btn-age-no { background: var(--in); color: var(--muted); text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; display: block; text-align: center;}
+.btn-age-yes:active, .btn-age-no:active { opacity: 0.8; }
+
+/* Clase para ocultar el Age Gate */
+.hidden-gate { display: none !important; }
+
+/* Header Principal */
+header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--nav);position:sticky;top:0;z-index:50;will-change:transform;}
+.h-left{display:flex;align-items:center;gap:16px;}
+.menu-btn{background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer;}
+.logo{font-size:1.8rem;font-weight:800;font-style:italic;letter-spacing:-0.5px;color:var(--text);}
+.h-right{display:flex;gap:12px;}
+.icon-btn{border:none;width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;}
+.btn-outline{background:transparent;border:1px solid rgba(128,128,128,0.3);color:var(--text);}
+.btn-solid{background:var(--in);color:var(--text);}
+
+/* Buscador */
+.search-bar{padding:0 16px;background:var(--nav);display:none;padding-bottom:12px;border-bottom:1px solid rgba(128,128,128,0.1)}
+.search-bar.show{display:block}
+.search-bar input{width:100%;padding:12px 16px;border-radius:8px;border:1px solid var(--in);background:var(--bg);color:var(--text);font-size:1rem;outline:none}
+
+/* Grid y Tarjetas */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;padding-bottom:80px;content-visibility:auto;}
+@media(min-width:768px){.grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
+.card{cursor:pointer;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;transform:translateZ(0);}
+.img-wrap{position:relative;width:100%;aspect-ratio: 2 / 3; border-radius:12px;overflow:hidden;background:var(--in);box-shadow: 0 4px 15px rgba(0,0,0,0.4);}
+.img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.b-left{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.8);color:#fff;font-size:.75rem;padding:4px 10px;border-radius:20px;font-weight:bold;}
+.title{font-size:.9rem;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--text);text-align:center;}
+
+/* Pantalla completa (Detalle) */
+#gameDetail {display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto; flex-direction: column;will-change:transform;}
+#gameDetail.active { display: flex; }
+.detail-nav {display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--nav); position: sticky; top: 0; z-index: 10;}
+.btn-back {background: var(--in); border: none; color: var(--text); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer;}
+.detail-nav span { font-weight: 700; font-size: 1.05rem; color: var(--text); }
+.detail-content { padding: 16px; padding-bottom: 60px; max-width: 600px; margin: 0 auto; width: 100%; }
+.img-container {width: 70%; margin: 0 auto 20px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.5); background: var(--in); aspect-ratio: 2 / 3;}
+.detail-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.detail-info { margin-bottom: 24px; text-align: center;}
+.detail-info h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 10px; color: var(--text); }
+.detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; text-align: left;}
+.ad-space {margin: 16px 0; background: var(--card); border-radius: 12px; height: 90px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; opacity: 0.5;}
+.action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.btn-dl { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1.05rem; border: none;}
+.btn-share { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--in); color:var(--text); text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1rem; border:none; cursor:pointer; width:100%;}
+
+.msg{text-align:center;color:var(--muted);grid-column:1/-1;padding:40px 0}
+</style>
+</head>
+<body>
+
+<!-- PANTALLA DE ADVERTENCIA DE EDAD -->
+<div id="ageGate">
+  <div class="age-box">
+    <h2>Contenido Adulto</h2>
+    <p>Este sitio web contiene material para adultos. Para continuar, debes confirmar que tienes al menos 18 años de edad.</p>
+    <div class="age-btns">
+      <button class="btn-age-yes" id="btnAgeYes">Sí, soy mayor de 18 años</button>
+      <a href="https://www.google.com" class="btn-age-no">No, salir</a>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<header>
+  <div class="h-left">
+    <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
+    <div class="logo">Gansito</div>
+  </div>
+  <div class="h-right">
+    <button class="icon-btn btn-outline" id="themeBtn"><i class="fa-regular fa-sun" id="themeIcon"></i></button>
+    <button class="icon-btn btn-solid" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+  </div>
+</header>
+
+<div class="search-bar" id="searchBar">
+  <input type="text" id="searchInput" placeholder="Buscar videojuego...">
+</div>
+
+<main class="grid" id="grid">
+  <div class="msg">Cargando catálogo...</div>
+</main>
+
+<div id="gameDetail">
+  <div class="detail-nav">
+    <button class="btn-back" id="btnBack"><i class="fa-solid fa-arrow-left"></i></button>
+    <span id="dTitleNav">Cargando...</span>
+  </div>
+  <div class="detail-content">
+    <div class="img-container">
+      <img id="dImg" class="detail-img" src="">
+    </div>
+    <div class="ad-space">Publicidad</div>
+    <div class="detail-info">
+      <h1 id="dTitle"></h1>
+      <p id="dDesc"></p>
+    </div>
+    <div class="action-buttons">
+      <a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a>
+      <button id="shareBtn" class="btn-share"><i class="fa-solid fa-share-nodes"></i> <span id="shareText">Compartir este Juego</span></button>
+    </div>
+    <div class="ad-space">Publicidad</div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,getDocs,orderBy,query}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDHIRKn4tTab8gh1hLW0wFUTbX4Ms6PUag",
+  authDomain: "dime-55bdb.firebaseapp.com",
+  projectId: "dime-55bdb",
+  storageBucket: "dime-55bdb.firebasestorage.app",
+  messagingSenderId: "289431258659",
+  appId: "1:289431258659:web:2826041d995d1f79cc5396"
+};
+
+const app=initializeApp(firebaseConfig),db=getFirestore(app);
+const grid=document.getElementById('grid'),gameDetail=document.getElementById('gameDetail');
+const dImg=document.getElementById('dImg'),dTitle=document.getElementById('dTitle'),dDesc=document.getElementById('dDesc'),dLink=document.getElementById('dLink'),dTitleNav=document.getElementById('dTitleNav');
+const shareBtn=document.getElementById('shareBtn'),shareText=document.getElementById('shareText');
+let allGames = [], currentGameId = null;
+
+// --- LÓGICA DE LA ADVERTENCIA DE EDAD ---
+const ageGate = document.getElementById('ageGate');
+
+// Al hacer clic en "Sí", simplemente ocultamos el aviso (no se guarda en memoria)
+document.getElementById('btnAgeYes').onclick = () => {
+  ageGate.classList.add('hidden-gate'); 
+};
+
+// --- LÓGICA NORMAL DE LA PÁGINA ---
+document.getElementById('searchBtn').onclick=()=>{
+  const sb=document.getElementById('searchBar');
+  sb.classList.toggle('show');
+  if(sb.classList.contains('show')) document.getElementById('searchInput').focus();
+  else { document.getElementById('searchInput').value=''; renderGames(allGames); }
+};
+document.getElementById('searchInput').oninput=(e)=>{
+  const term = e.target.value.toLowerCase();
+  renderGames(allGames.filter(g => (g.titulo||'').toLowerCase().includes(term)));
+};
+
+document.getElementById('themeBtn').onclick=()=>{
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const icon = document.getElementById('themeIcon');
+  if(isLight){ document.documentElement.removeAttribute('data-theme'); icon.className='fa-regular fa-sun'; }
+  else{ document.documentElement.setAttribute('data-theme','light'); icon.className='fa-regular fa-moon'; }
+};
+
+async function load(){
+  try{
+    const q=query(collection(db,'videojuegos'),orderBy('fecha','desc'));
+    const snap=await getDocs(q);
+    allGames = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderGames(allGames);
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const juegoId = urlParams.get('juego');
+    if(juegoId){
+      const encontrado = allGames.find(g => g.id === juegoId);
+      if(encontrado) abrirJuego(encontrado);
+    }
+  }catch(e){
+    grid.innerHTML='<div class="msg">Error de conexión.</div>';
+  }
+}
+
+function renderGames(juegos){
+  grid.innerHTML='';
+  if(juegos.length === 0){ grid.innerHTML='<div class="msg">No hay juegos.</div>'; return; }
+  juegos.forEach(j=>{
+    const c=document.createElement('div');c.className='card';
+    c.innerHTML=`<div class="img-wrap"><img src="${j.portada||'https://via.placeholder.com/400x600/1a1b22/ff3366?text=Gansito'}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
+    c.onclick=()=> abrirJuego(j);
+    grid.appendChild(c);
+  });
+}
+
+function abrirJuego(juego){
+  currentGameId = juego.id;
+  dImg.src=juego.portada||'https://via.placeholder.com/400x600/1a1b22/ff3366?text=Gansito';
+  dTitle.textContent=juego.titulo||'Sin título';
+  dTitleNav.textContent=juego.titulo||'Juego';
+  dDesc.textContent=juego.descripcion||'Sin descripción';
+  dLink.href=juego.link||'#';
+  shareText.textContent = "Compartir este Juego";
+  gameDetail.classList.add('active');
+  document.body.style.overflow = 'hidden'; 
+}
+
+function cerrarJuego(){
+  gameDetail.classList.remove('active');
+  document.body.style.overflow = 'auto';
+  if(window.location.search.includes('?juego=')) window.history.replaceState(null, '', window.location.pathname);
+}
+
+document.getElementById('btnBack').onclick = cerrarJuego;
+
+shareBtn.onclick = async () => {
+  if(!currentGameId) return;
+  const url = window.location.origin + window.location.pathname + '?juego=' + currentGameId;
+  if (navigator.share) {
+    try { await navigator.share({ title: dTitle.textContent, text: '¡Mira este juego en Gansito!', url: url }); } catch (err) {}
+  } else {
+    navigator.clipboard.writeText(url);
+    shareText.textContent = "¡Enlace Copiado!";
+    setTimeout(() => { shareText.textContent = "Compartir este Juego"; }, 2000);
+  }
+};
+
+load();
+</script>
+</body>
+</html>

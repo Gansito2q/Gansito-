@@ -36,13 +36,22 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .search-bar input{width:100%;padding:12px 16px;border-radius:8px;border:1px solid var(--in);background:var(--bg);color:var(--text);font-size:1rem;outline:none}
 
 /* --- GRID Y TARJETAS --- */
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;padding-bottom:80px;content-visibility:auto;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;content-visibility:auto;}
 @media(min-width:768px){.grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
 .card{cursor:pointer;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;transform:translateZ(0);}
 .img-wrap{position:relative;width:100%;aspect-ratio: 2 / 3; border-radius:12px;overflow:hidden;background:var(--in);box-shadow: 0 4px 15px rgba(0,0,0,0.4);}
 .img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
 .b-left{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.8);color:#fff;font-size:.75rem;padding:4px 10px;border-radius:20px;font-weight:bold;}
 .title{font-size:.9rem;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--text);text-align:center;}
+
+/* --- CONTENEDOR DEL ANUNCIO EN EL GRID --- */
+.ad-grid-item {
+  grid-column: 1 / -1; /* Ocupa todo el ancho de la pantalla */
+  display: flex; justify-content: center; align-items: center;
+  margin: 10px 0; min-height: 250px;
+  background: var(--card); border-radius: 12px; overflow: hidden;
+}
+.ad-grid-item iframe { max-width: 100%; border: none; }
 
 /* --- PANTALLA DE JUEGO --- */
 #gameDetail {display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto; flex-direction: column;will-change:transform;}
@@ -57,7 +66,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .detail-info h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 10px; color: var(--text); }
 .detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; text-align: left;}
 
-/* Caja del Banner */
 .ad-space {margin: 16px auto; background: transparent; border-radius: 12px; min-height: 250px; display: flex; align-items: center; justify-content: center; overflow: hidden;}
 .ad-space iframe { max-width: 100%; border: none; }
 
@@ -70,7 +78,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 </head>
 <body>
 
-<!-- PANTALLA DE ADVERTENCIA DE EDAD -->
 <div id="ageGate">
   <div class="age-box">
     <h2>Contenido Adulto</h2>
@@ -82,7 +89,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
   </div>
 </div>
 
-<!-- CONTENIDO PRINCIPAL -->
 <header>
   <div class="h-left">
     <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
@@ -112,16 +118,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
       <img id="dImg" class="detail-img" src="">
     </div>
     
-    <!-- BANNER 300x250 ADSTERRA -->
     <div class="ad-space">
       <script type="text/javascript">
-        atOptions = {
-          'key' : '08157240a7221626e752c94138bd22e1',
-          'format' : 'iframe',
-          'height' : 250,
-          'width' : 300,
-          'params' : {}
-        };
+        atOptions = { 'key' : '08157240a7221626e752c94138bd22e1', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
       </script>
       <script type="text/javascript" src="https://www.highrevenueformat.com/08157240a7221626e752c94138bd22e1/invoke.js"></script>
     </div>
@@ -159,33 +158,23 @@ const dImg=document.getElementById('dImg'),dTitle=document.getElementById('dTitl
 const shareBtn=document.getElementById('shareBtn'),shareText=document.getElementById('shareText');
 let allGames = [], currentGameId = null;
 
-// --- SISTEMA DE POPUNDER (SOLO 1 VEZ POR SESIÓN) ---
+// --- SISTEMA DE POPUNDER ---
 let popunderEjecutado = false;
-
 document.body.addEventListener('click', function triggerPopunder() {
   if (!sessionStorage.getItem('popunderShown') && !popunderEjecutado) {
-    // Evitamos que se ejecute más de una vez en la misma carga
     popunderEjecutado = true; 
-    
-    // Inyectamos el script del Popunder
     var script = document.createElement('script');
     script.src = "https://pl31891804.profitableratecpmnetwork.com/78/0c/8e/780c8e579d05fe0220917bf420aa0733.js";
     document.body.appendChild(script);
-    
-    // Guardamos en la sesión para que no moleste más
     sessionStorage.setItem('popunderShown', 'true');
-    
-    // Removemos el evento para ahorrar memoria
     document.body.removeEventListener('click', triggerPopunder);
   }
 });
 
-// --- LÓGICA DE EDAD ---
 document.getElementById('btnAgeYes').onclick = () => {
   document.getElementById('ageGate').classList.add('hidden-gate'); 
 };
 
-// --- LÓGICA DE LA PÁGINA ---
 document.getElementById('searchBtn').onclick=()=>{
   const sb=document.getElementById('searchBar');
   sb.classList.toggle('show');
@@ -222,14 +211,32 @@ async function load(){
   }
 }
 
+// --- RENDERIZADO CON ANUNCIO CADA 5 JUEGOS ---
 function renderGames(juegos){
   grid.innerHTML='';
   if(juegos.length === 0){ grid.innerHTML='<div class="msg">No hay juegos.</div>'; return; }
-  juegos.forEach(j=>{
+  
+  let contadorAnuncios = 0; // Para no cargar el mismo ID de anuncio múltiples veces si hay muchos juegos
+
+  juegos.forEach((j, index)=>{
     const c=document.createElement('div');c.className='card';
     c.innerHTML=`<div class="img-wrap"><img src="${j.portada||'https://via.placeholder.com/400x600/1a1b22/ff3366?text=Gansito'}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
     c.onclick=()=> abrirJuego(j);
     grid.appendChild(c);
+
+    // Si es el juego número 5, 10, 15... (y no es el último de la lista), insertamos el anuncio
+    if ((index + 1) % 5 === 0 && (index + 1) < juegos.length) {
+      const adDiv = document.createElement('div');
+      adDiv.className = 'ad-grid-item';
+      adDiv.innerHTML = `
+        <script type="text/javascript">
+          atOptions = { 'key' : '08157240a7221626e752c94138bd22e1', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+        <\/script>
+        <script type="text/javascript" src="https://www.highrevenueformat.com/08157240a7221626e752c94138bd22e1/invoke.js"><\/script>
+      `;
+      grid.appendChild(adDiv);
+      contadorAnuncios++;
+    }
   });
 }
 
@@ -268,4 +275,4 @@ shareBtn.onclick = async () => {
 load();
 </script>
 </body>
-      </html>
+  </html>

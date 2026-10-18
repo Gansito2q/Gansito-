@@ -11,7 +11,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif;}
 body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent;overflow-x:hidden;}
 
-/* --- ADVERTENCIA DE EDAD --- */
 #ageGate {position: fixed; inset: 0; z-index: 9999; background: #0a0a0f; display: flex; align-items: center; justify-content: center; padding: 20px;}
 .age-box {background: var(--card); padding: 30px 20px; border-radius: 16px; text-align: center; max-width: 400px; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
 .age-box h2 { font-size: 1.5rem; margin-bottom: 10px; color: #fff; text-transform: uppercase;}
@@ -21,8 +20,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlig
 .btn-age-no { background: var(--in); color: var(--muted); text-decoration: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1rem; display: block; text-align: center;}
 .hidden-gate { display: none !important; }
 
-/* --- HEADER --- */
-header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--nav);position:sticky;top:0;z-index:50;will-change:transform;}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--nav);position:sticky;top:0;z-index:50;}
 .h-left{display:flex;align-items:center;gap:16px;}
 .menu-btn{background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer;}
 .logo{font-size:1.8rem;font-weight:800;font-style:italic;letter-spacing:-0.5px;color:var(--text);}
@@ -35,7 +33,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .search-bar.show{display:block}
 .search-bar input{width:100%;padding:12px 16px;border-radius:8px;border:1px solid var(--in);background:var(--bg);color:var(--text);font-size:1rem;outline:none}
 
-/* --- GRID Y TARJETAS --- */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;content-visibility:auto;}
 @media(min-width:768px){.grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
 .card{cursor:pointer;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;transform:translateZ(0);}
@@ -44,17 +41,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .b-left{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.8);color:#fff;font-size:.75rem;padding:4px 10px;border-radius:20px;font-weight:bold;}
 .title{font-size:.9rem;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--text);text-align:center;}
 
-/* --- CONTENEDOR DEL ANUNCIO PEQUEÑO EN EL GRID (320x50) --- */
-.ad-grid-item {
-  grid-column: 1 / -1;
-  display: flex; justify-content: center; align-items: center;
-  margin: 10px 0; min-height: 50px;
-  background: transparent; overflow: hidden;
-}
+.ad-grid-item { grid-column: 1 / -1; display: flex; justify-content: center; align-items: center; margin: 10px 0; min-height: 50px; background: transparent; overflow: hidden; }
 .ad-grid-item iframe { width: 320px; height: 50px; border: none; background: transparent; }
 
-/* --- PANTALLA DE JUEGO --- */
-#gameDetail {display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto; flex-direction: column;will-change:transform;}
+#gameDetail {display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto; flex-direction: column;}
 #gameDetail.active { display: flex; }
 .detail-nav {display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--nav); position: sticky; top: 0; z-index: 10;}
 .btn-back {background: var(--in); border: none; color: var(--text); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer;}
@@ -66,7 +56,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .detail-info h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 10px; color: var(--text); }
 .detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; text-align: left;}
 
-/* --- BANNER GRANDE EN EL JUEGO (300x250) --- */
 .ad-space-large {margin: 20px auto; display: flex; justify-content: center; align-items: center; min-height: 250px; overflow: hidden;}
 .ad-space-large iframe { width: 300px; height: 250px; border: none; background: transparent; }
 
@@ -118,15 +107,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
     <div class="img-container">
       <img id="dImg" class="detail-img" src="">
     </div>
-    
     <div class="detail-info">
       <h1 id="dTitle"></h1>
       <p id="dDesc"></p>
     </div>
-
-    <!-- BANNER GRANDE 300x250 (Dentro del juego) -->
     <div class="ad-space-large" id="ad-large-container"></div>
-
     <div class="action-buttons">
       <a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a>
       <button id="shareBtn" class="btn-share"><i class="fa-solid fa-share-nodes"></i> <span id="shareText">Compartir este Juego</span></button>
@@ -134,12 +119,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
   </div>
 </div>
 
-<!-- SOCIAL BAR ADSTERRA -->
 <script type="text/javascript" src="https://pl31891805.profitableratecpmnetwork.com/35/b0/bd/35b0bd6d388d38f80634e7051142ff5e.js"></script>
 
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,getDocs,orderBy,query}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDHIRKn4tTab8gh1hLW0wFUTbX4Ms6PUag",
@@ -150,20 +134,27 @@ const firebaseConfig = {
   appId: "1:289431258659:web:2826041d995d1f79cc5396"
 };
 
-const app=initializeApp(firebaseConfig),db=getFirestore(app);
-const grid=document.getElementById('grid'),gameDetail=document.getElementById('gameDetail');
-const dImg=document.getElementById('dImg'),dTitle=document.getElementById('dTitle'),dDesc=document.getElementById('dDesc'),dLink=document.getElementById('dLink'),dTitleNav=document.getElementById('dTitleNav');
-const shareBtn=document.getElementById('shareBtn'),shareText=document.getElementById('shareText');
-let allGames = [], currentGameId = null;
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const grid = document.getElementById('grid');
+const gameDetail = document.getElementById('gameDetail');
+const dImg = document.getElementById('dImg');
+const dTitle = document.getElementById('dTitle');
+const dDesc = document.getElementById('dDesc');
+const dLink = document.getElementById('dLink');
+const dTitleNav = document.getElementById('dTitleNav');
+const shareBtn = document.getElementById('shareBtn');
+const shareText = document.getElementById('shareText');
 
+let allGames = [];
+let currentGameId = null;
 const defaultImg = "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400&auto=format&fit=crop";
 
-// --- SISTEMA DE POPUNDER ---
 let popunderEjecutado = false;
 document.body.addEventListener('click', function triggerPopunder() {
   if (!sessionStorage.getItem('popunderShown') && !popunderEjecutado) {
     popunderEjecutado = true; 
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.src = "https://pl31891804.profitableratecpmnetwork.com/78/0c/8e/780c8e579d05fe0220917bf420aa0733.js";
     document.body.appendChild(script);
     sessionStorage.setItem('popunderShown', 'true');
@@ -175,28 +166,29 @@ document.getElementById('btnAgeYes').onclick = () => {
   document.getElementById('ageGate').classList.add('hidden-gate'); 
 };
 
-document.getElementById('searchBtn').onclick=()=>{
-  const sb=document.getElementById('searchBar');
+document.getElementById('searchBtn').onclick = () => {
+  const sb = document.getElementById('searchBar');
   sb.classList.toggle('show');
   if(sb.classList.contains('show')) document.getElementById('searchInput').focus();
   else { document.getElementById('searchInput').value=''; renderGames(allGames); }
 };
-document.getElementById('searchInput').oninput=(e)=>{
+
+document.getElementById('searchInput').oninput = (e) => {
   const term = e.target.value.toLowerCase();
   renderGames(allGames.filter(g => (g.titulo||'').toLowerCase().includes(term)));
 };
 
-document.getElementById('themeBtn').onclick=()=>{
+document.getElementById('themeBtn').onclick = () => {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const icon = document.getElementById('themeIcon');
   if(isLight){ document.documentElement.removeAttribute('data-theme'); icon.className='fa-regular fa-sun'; }
   else{ document.documentElement.setAttribute('data-theme','light'); icon.className='fa-regular fa-moon'; }
 };
 
-async function load(){
-  try{
-    const q=query(collection(db,'videojuegos'),orderBy('fecha','desc'));
-    const snap=await getDocs(q);
+async function load() {
+  try {
+    const q = query(collection(db, 'videojuegos'), orderBy('fecha', 'desc'));
+    const snap = await getDocs(q);
     allGames = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderGames(allGames);
     
@@ -206,28 +198,27 @@ async function load(){
       const encontrado = allGames.find(g => g.id === juegoId);
       if(encontrado) abrirJuego(encontrado);
     }
-  }catch(e){
+  } catch(e) {
+    console.error("Error Firebase:", e);
     grid.innerHTML='<div class="msg">Error de conexión.</div>';
   }
 }
 
-// --- RENDERIZADO CON ANUNCIO PEQUEÑO (320x50) EN EL GRID ---
-function renderGames(juegos){
+function renderGames(juegos) {
   grid.innerHTML='';
   if(juegos.length === 0){ grid.innerHTML='<div class="msg">No hay juegos.</div>'; return; }
   
-  juegos.forEach((j, index)=>{
-    const c=document.createElement('div');c.className='card';
+  juegos.forEach((j, index) => {
+    const c = document.createElement('div');
+    c.className = 'card';
     const portadaUrl = j.portada ? j.portada : defaultImg;
-    c.innerHTML=`<div class="img-wrap"><img src="${portadaUrl}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
-    c.onclick=()=> abrirJuego(j);
+    c.innerHTML = `<div class="img-wrap"><img src="${portadaUrl}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
+    c.onclick = () => abrirJuego(j);
     grid.appendChild(c);
 
-    // Insertar anuncio pequeño (320x50) después del 5to, 10mo, 15to juego...
     if ((index + 1) % 5 === 0 && (index + 1) < juegos.length) {
       const adDiv = document.createElement('div');
       adDiv.className = 'ad-grid-item';
-      
       const iframe = document.createElement('iframe');
       adDiv.appendChild(iframe);
       
@@ -245,22 +236,20 @@ function renderGames(juegos){
         </html>
       `);
       iframeDoc.close();
-      
       grid.appendChild(adDiv);
     }
   });
 }
 
-function abrirJuego(juego){
+function abrirJuego(juego) {
   currentGameId = juego.id;
-  dImg.src=juego.portada ? juego.portada : defaultImg;
-  dTitle.textContent=juego.titulo||'Sin título';
-  dTitleNav.textContent=juego.titulo||'Juego';
-  dDesc.textContent=juego.descripcion||'Sin descripción';
-  dLink.href=juego.link||'#';
+  dImg.src = juego.portada ? juego.portada : defaultImg;
+  dTitle.textContent = juego.titulo || 'Sin título';
+  dTitleNav.textContent = juego.titulo || 'Juego';
+  dDesc.textContent = juego.descripcion || 'Sin descripción';
+  dLink.href = juego.link || '#';
   shareText.textContent = "Compartir este Juego";
   
-  // Inyectar el banner GRANDE (300x250) en la vista del juego
   const adLargeContainer = document.getElementById('ad-large-container');
   adLargeContainer.innerHTML = ''; 
   const iframeLarge = document.createElement('iframe');
@@ -284,7 +273,7 @@ function abrirJuego(juego){
   document.body.style.overflow = 'hidden'; 
 }
 
-function cerrarJuego(){
+function cerrarJuego() {
   gameDetail.classList.remove('active');
   document.body.style.overflow = 'auto';
   if(window.location.search.includes('?juego=')) window.history.replaceState(null, '', window.location.pathname);
@@ -307,4 +296,4 @@ shareBtn.onclick = async () => {
 load();
 </script>
 </body>
-        </html>
+  </html>

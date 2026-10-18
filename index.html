@@ -44,13 +44,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .b-left{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.8);color:#fff;font-size:.75rem;padding:4px 10px;border-radius:20px;font-weight:bold;}
 .title{font-size:.9rem;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--text);text-align:center;}
 
-/* --- CONTENEDOR DEL ANUNCIO EN EL GRID (300x250) --- */
+/* --- CONTENEDOR DEL ANUNCIO PEQUEÑO EN EL GRID (320x50) --- */
 .ad-grid-item {
   grid-column: 1 / -1;
   display: flex; justify-content: center; align-items: center;
-  margin: 10px 0; min-height: 250px;
-  background: var(--card); border-radius: 12px; overflow: hidden;
+  margin: 10px 0; min-height: 50px;
+  background: transparent; overflow: hidden;
 }
+.ad-grid-item iframe { width: 320px; height: 50px; border: none; background: transparent; }
 
 /* --- PANTALLA DE JUEGO --- */
 #gameDetail {display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto; flex-direction: column;will-change:transform;}
@@ -65,7 +66,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .detail-info h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 10px; color: var(--text); }
 .detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; text-align: left;}
 
-.ad-space-small {margin: 20px auto; display: flex; justify-content: center; align-items: center; min-height: 50px; overflow: hidden;}
+/* --- BANNER GRANDE EN EL JUEGO (300x250) --- */
+.ad-space-large {margin: 20px auto; display: flex; justify-content: center; align-items: center; min-height: 250px; overflow: hidden;}
+.ad-space-large iframe { width: 300px; height: 250px; border: none; background: transparent; }
 
 .action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 .btn-dl { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1.05rem; border: none;}
@@ -121,13 +124,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
       <p id="dDesc"></p>
     </div>
 
-    <!-- BANNER 320x50 -->
-    <div class="ad-space-small">
-      <script type="text/javascript">
-        atOptions = { 'key' : '2495b9337539202227cb9195a6ab2b97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-      </script>
-      <script type="text/javascript" src="https://www.highrevenueformat.com/2495b9337539202227cb9195a6ab2b97/invoke.js"></script>
-    </div>
+    <!-- BANNER GRANDE 300x250 (Dentro del juego) -->
+    <div class="ad-space-large" id="ad-large-container"></div>
 
     <div class="action-buttons">
       <a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a>
@@ -158,7 +156,6 @@ const dImg=document.getElementById('dImg'),dTitle=document.getElementById('dTitl
 const shareBtn=document.getElementById('shareBtn'),shareText=document.getElementById('shareText');
 let allGames = [], currentGameId = null;
 
-// Imagen por defecto si el juego no tiene portada
 const defaultImg = "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400&auto=format&fit=crop";
 
 // --- SISTEMA DE POPUNDER ---
@@ -214,30 +211,41 @@ async function load(){
   }
 }
 
-// --- RENDERIZADO CON HTML FIJO PARA LOS ANUNCIOS ---
+// --- RENDERIZADO CON ANUNCIO PEQUEÑO (320x50) EN EL GRID ---
 function renderGames(juegos){
   grid.innerHTML='';
   if(juegos.length === 0){ grid.innerHTML='<div class="msg">No hay juegos.</div>'; return; }
   
   juegos.forEach((j, index)=>{
     const c=document.createElement('div');c.className='card';
-    // Si no hay portada, se usa la defaultImg
     const portadaUrl = j.portada ? j.portada : defaultImg;
     c.innerHTML=`<div class="img-wrap"><img src="${portadaUrl}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
     c.onclick=()=> abrirJuego(j);
     grid.appendChild(c);
 
-    // Insertar anuncio 300x250 después del 5to, 10mo, 15to juego...
+    // Insertar anuncio pequeño (320x50) después del 5to, 10mo, 15to juego...
     if ((index + 1) % 5 === 0 && (index + 1) < juegos.length) {
       const adDiv = document.createElement('div');
       adDiv.className = 'ad-grid-item';
-      // INYECCIÓN SEGURA DE ANUNCIO
-      adDiv.innerHTML = `
-        <script type="text/javascript">
-          atOptions = { 'key' : '08157240a7221626e752c94138bd22e1', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-        <\/script>
-        <script type="text/javascript" src="https://www.highrevenueformat.com/08157240a7221626e752c94138bd22e1/invoke.js"><\/script>
-      `;
+      
+      const iframe = document.createElement('iframe');
+      adDiv.appendChild(iframe);
+      
+      const iframeDoc = iframe.contentWindow.document;
+      iframeDoc.open();
+      iframeDoc.write(`
+        <html>
+          <head><style>body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:transparent;}</style></head>
+          <body>
+            <script type="text/javascript">
+              atOptions = { 'key' : '2495b9337539202227cb9195a6ab2b97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+            <\/script>
+            <script type="text/javascript" src="https://www.highrevenueformat.com/2495b9337539202227cb9195a6ab2b97/invoke.js"><\/script>
+          </body>
+        </html>
+      `);
+      iframeDoc.close();
+      
       grid.appendChild(adDiv);
     }
   });
@@ -251,6 +259,27 @@ function abrirJuego(juego){
   dDesc.textContent=juego.descripcion||'Sin descripción';
   dLink.href=juego.link||'#';
   shareText.textContent = "Compartir este Juego";
+  
+  // Inyectar el banner GRANDE (300x250) en la vista del juego
+  const adLargeContainer = document.getElementById('ad-large-container');
+  adLargeContainer.innerHTML = ''; 
+  const iframeLarge = document.createElement('iframe');
+  adLargeContainer.appendChild(iframeLarge);
+  const iframeLargeDoc = iframeLarge.contentWindow.document;
+  iframeLargeDoc.open();
+  iframeLargeDoc.write(`
+    <html>
+      <head><style>body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:transparent;}</style></head>
+      <body>
+        <script type="text/javascript">
+          atOptions = { 'key' : '08157240a7221626e752c94138bd22e1', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+        <\/script>
+        <script type="text/javascript" src="https://www.highrevenueformat.com/08157240a7221626e752c94138bd22e1/invoke.js"><\/script>
+      </body>
+    </html>
+  `);
+  iframeLargeDoc.close();
+
   gameDetail.classList.add('active');
   document.body.style.overflow = 'hidden'; 
 }
@@ -278,4 +307,4 @@ shareBtn.onclick = async () => {
 load();
 </script>
 </body>
-      </html>
+        </html>

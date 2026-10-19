@@ -53,16 +53,21 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .detail-content { padding: 16px; padding-bottom: 60px; max-width: 600px; margin: 0 auto; width: 100%; }
 .img-container {width: 70%; margin: 0 auto 20px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.5); background: var(--in); aspect-ratio: 2 / 3;}
 .detail-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.detail-info { margin-bottom: 24px; text-align: center;}
-.detail-info h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 10px; color: var(--text); }
-.detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; text-align: left;}
 
-/* Contenedores específicos para forzar el tamaño */
+/* Título y botón juntos */
+.title-download-section { margin-bottom: 24px; text-align: center; }
+.title-download-section h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 15px; color: var(--text); }
+
+/* Descripción */
+.detail-info { margin-bottom: 24px; text-align: left;}
+.detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; }
+
+/* Contenedores específicos para forzar el tamaño de anuncios */
 .ad-top {display:flex; justify-content:center; align-items:center; width:100%; height: 50px; margin-bottom: 16px; overflow: hidden;}
 .ad-bottom {display:flex; justify-content:center; align-items:center; width:100%; height: 250px; margin: 20px 0; overflow: hidden;}
 
-.action-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.btn-dl { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1.05rem; border: none;}
+/* Botones */
+.btn-dl { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1.05rem; border: none; width: 100%; max-width: 300px; margin: 0 auto;}
 .btn-share { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--in); color:var(--text); text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1rem; border:none; cursor:pointer; width:100%;}
 
 .msg{text-align:center;color:var(--muted);grid-column:1/-1;padding:40px 0}
@@ -114,16 +119,22 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
       <img id="dImg" class="detail-img" src="">
     </div>
     
-    <div class="detail-info">
+    <!-- TÍTULO Y BOTÓN DE DESCARGA JUNTOS -->
+    <div class="title-download-section">
       <h1 id="dTitle"></h1>
+      <a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a>
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div class="detail-info">
       <p id="dDesc"></p>
     </div>
 
     <!-- Anuncio grande abajo -->
     <div class="ad-bottom" id="ad-bottom-container"></div>
 
-    <div class="action-buttons">
-      <a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a>
+    <!-- BOTÓN COMPARTIR AL FINAL -->
+    <div class="action-buttons" style="margin-top: 30px;">
       <button id="shareBtn" class="btn-share"><i class="fa-solid fa-share-nodes"></i> <span id="shareText">Compartir este Juego</span></button>
     </div>
   </div>
@@ -152,8 +163,6 @@ const shareBtn=document.getElementById('shareBtn'),shareText=document.getElement
 let allGames = [], currentGameId = null;
 
 const defaultImg = "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400&auto=format&fit=crop";
-
-// (El código del Popunder ha sido eliminado de aquí)
 
 document.getElementById('btnAgeYes').onclick = () => {
   document.getElementById('ageGate').classList.add('hidden-gate'); 

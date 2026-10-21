@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0f1015">
-<title>Gansito</title>
+<title>Vahn</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{--bg:#0f1015;--card:#1a1b22;--text:#fff;--muted:#9ca3af;--accent:#ff3366;--nav:#15161c;--in:#23242c}
@@ -22,7 +22,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlig
 .hidden-gate { display: none !important; }
 
 /* --- HEADER --- */
-header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--nav);position:sticky;top:0;z-index:50;will-change:transform;}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--nav);position:sticky;top:0;z-index:50;}
 .h-left{display:flex;align-items:center;gap:16px;}
 .menu-btn{background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer;}
 .logo{font-size:1.8rem;font-weight:800;font-style:italic;letter-spacing:-0.5px;color:var(--text);}
@@ -44,8 +44,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .b-left{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.8);color:#fff;font-size:.75rem;padding:4px 10px;border-radius:20px;font-weight:bold;}
 .title{font-size:.9rem;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--text);text-align:center;}
 
+/* --- PAGINACIÓN --- */
+.pagination {display: flex; justify-content: center; align-items: center; gap: 8px; padding: 20px 16px; flex-wrap: wrap; margin-bottom: 20px;}
+.page-btn {background: var(--card); color: var(--text); border: 1px solid rgba(128,128,128,0.2); min-width: 40px; height: 40px; padding: 0 10px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;}
+.page-btn.active {background: var(--accent); color: #fff; border-color: var(--accent);}
+.page-btn:disabled {opacity: 0.3; cursor: not-allowed;}
+.page-btn:hover:not(:disabled):not(.active) {background: var(--in);}
+
 /* --- PANTALLA DE JUEGO --- */
-#gameDetail {display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto; flex-direction: column;will-change:transform;}
+#gameDetail {display: none; position: fixed; inset: 0; background: var(--bg); z-index: 100; overflow-y: auto; flex-direction: column;}
 #gameDetail.active { display: flex; }
 .detail-nav {display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--nav); position: sticky; top: 0; z-index: 10;}
 .btn-back {background: var(--in); border: none; color: var(--text); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer;}
@@ -54,19 +61,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 .img-container {width: 70%; margin: 0 auto 20px auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.5); background: var(--in); aspect-ratio: 2 / 3;}
 .detail-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* Título y botón juntos */
 .title-download-section { margin-bottom: 24px; text-align: center; }
 .title-download-section h1 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 15px; color: var(--text); }
 
-/* Descripción */
 .detail-info { margin-bottom: 24px; text-align: left;}
 .detail-info p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; }
 
-/* Contenedores específicos para forzar el tamaño de anuncios */
 .ad-top {display:flex; justify-content:center; align-items:center; width:100%; height: 50px; margin-bottom: 16px; overflow: hidden;}
 .ad-bottom {display:flex; justify-content:center; align-items:center; width:100%; height: 250px; margin: 20px 0; overflow: hidden;}
 
-/* Botones */
 .btn-dl { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--accent); color:#fff; text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1.05rem; border: none; width: 100%; max-width: 300px; margin: 0 auto;}
 .btn-share { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--in); color:var(--text); text-decoration:none; padding:16px; border-radius:12px; font-weight:bold; font-size:1rem; border:none; cursor:pointer; width:100%;}
 
@@ -89,7 +92,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 <header>
   <div class="h-left">
     <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
-    <div class="logo">Gansito</div>
+    <div class="logo">Vahn</div>
   </div>
   <div class="h-right">
     <button class="icon-btn btn-outline" id="themeBtn"><i class="fa-regular fa-sun" id="themeIcon"></i></button>
@@ -105,42 +108,33 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
   <div class="msg">Cargando catálogo...</div>
 </main>
 
+<!-- CONTENEDOR DE LA PAGINACIÓN -->
+<div class="pagination" id="pagination"></div>
+
 <div id="gameDetail">
   <div class="detail-nav">
     <button class="btn-back" id="btnBack"><i class="fa-solid fa-arrow-left"></i></button>
     <span id="dTitleNav">Cargando...</span>
   </div>
   <div class="detail-content">
-    
-    <!-- Anuncio pequeño arriba -->
     <div class="ad-top" id="ad-top-container"></div>
-
     <div class="img-container">
       <img id="dImg" class="detail-img" src="">
     </div>
-    
-    <!-- TÍTULO Y BOTÓN DE DESCARGA JUNTOS -->
     <div class="title-download-section">
       <h1 id="dTitle"></h1>
       <a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a>
     </div>
-
-    <!-- DESCRIPCIÓN -->
     <div class="detail-info">
       <p id="dDesc"></p>
     </div>
-
-    <!-- Anuncio grande abajo -->
     <div class="ad-bottom" id="ad-bottom-container"></div>
-
-    <!-- BOTÓN COMPARTIR AL FINAL -->
     <div class="action-buttons" style="margin-top: 30px;">
       <button id="shareBtn" class="btn-share"><i class="fa-solid fa-share-nodes"></i> <span id="shareText">Compartir este Juego</span></button>
     </div>
   </div>
 </div>
 
-<!-- SOCIAL BAR ADSTERRA -->
 <script type="text/javascript" src="https://pl31891805.profitableratecpmnetwork.com/35/b0/bd/35b0bd6d388d38f80634e7051142ff5e.js"></script>
 
 <script type="module">
@@ -160,7 +154,13 @@ const app=initializeApp(firebaseConfig),db=getFirestore(app);
 const grid=document.getElementById('grid'),gameDetail=document.getElementById('gameDetail');
 const dImg=document.getElementById('dImg'),dTitle=document.getElementById('dTitle'),dDesc=document.getElementById('dDesc'),dLink=document.getElementById('dLink'),dTitleNav=document.getElementById('dTitleNav');
 const shareBtn=document.getElementById('shareBtn'),shareText=document.getElementById('shareText');
-let allGames = [], currentGameId = null;
+const paginationContainer = document.getElementById('pagination');
+
+// Variables para la paginación
+let allGames = []; 
+let filteredGames = []; // Guarda los juegos filtrados por búsqueda
+let currentPage = 1;
+const itemsPerPage = 10; // Cantidad de juegos por lista
 
 const defaultImg = "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400&auto=format&fit=crop";
 
@@ -172,11 +172,19 @@ document.getElementById('searchBtn').onclick=()=>{
   const sb=document.getElementById('searchBar');
   sb.classList.toggle('show');
   if(sb.classList.contains('show')) document.getElementById('searchInput').focus();
-  else { document.getElementById('searchInput').value=''; renderGames(allGames); }
+  else { 
+    document.getElementById('searchInput').value=''; 
+    filteredGames = [...allGames]; // Restaurar todo
+    currentPage = 1;
+    renderPage();
+  }
 };
+
 document.getElementById('searchInput').oninput=(e)=>{
   const term = e.target.value.toLowerCase();
-  renderGames(allGames.filter(g => (g.titulo||'').toLowerCase().includes(term)));
+  filteredGames = allGames.filter(g => (g.titulo||'').toLowerCase().includes(term));
+  currentPage = 1; // Volver a la primera página al buscar
+  renderPage();
 };
 
 document.getElementById('themeBtn').onclick=()=>{
@@ -191,7 +199,8 @@ async function load(){
     const q=query(collection(db,'videojuegos'),orderBy('fecha','desc'));
     const snap=await getDocs(q);
     allGames = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderGames(allGames);
+    filteredGames = [...allGames]; 
+    renderPage();
     
     const urlParams = new URLSearchParams(window.location.search);
     const juegoId = urlParams.get('juego');
@@ -204,17 +213,87 @@ async function load(){
   }
 }
 
-function renderGames(juegos){
+// Función para dibujar los juegos de la página actual
+function renderPage() {
   grid.innerHTML='';
-  if(juegos.length === 0){ grid.innerHTML='<div class="msg">No hay juegos.</div>'; return; }
   
-  juegos.forEach((j, index)=>{
+  if(filteredGames.length === 0){ 
+    grid.innerHTML='<div class="msg">No hay juegos.</div>'; 
+    paginationContainer.innerHTML = '';
+    return; 
+  }
+
+  // Calcular qué juegos mostrar
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const gamesToShow = filteredGames.slice(startIndex, endIndex);
+
+  gamesToShow.forEach((j, index)=>{
     const c=document.createElement('div');c.className='card';
     const portadaUrl = j.portada ? j.portada : defaultImg;
     c.innerHTML=`<div class="img-wrap"><img src="${portadaUrl}" loading="lazy" alt="${j.titulo}"><div class="b-left">Juego</div></div><div class="title">${j.titulo||'Sin título'}</div>`;
     c.onclick=()=> abrirJuego(j);
     grid.appendChild(c);
+
+    // Insertar anuncio pequeño (320x50) después del 5to juego de la página
+    if ((index + 1) % 5 === 0 && (index + 1) < gamesToShow.length) {
+      const adDiv = document.createElement('div');
+      adDiv.className = 'ad-top'; // Reutilizamos el estilo
+      adDiv.style.gridColumn = '1 / -1'; // Ocupar todo el ancho
+      
+      const iframe = document.createElement('iframe');
+      iframe.style.width = '320px'; iframe.style.height = '50px'; iframe.style.border = 'none';
+      adDiv.appendChild(iframe);
+      
+      const iframeDoc = iframe.contentWindow.document;
+      iframeDoc.open();
+      iframeDoc.write(`
+        <html><head><style>body{margin:0;display:flex;justify-content:center;align-items:center;}</style></head><body>
+        <script type="text/javascript">
+          atOptions = { 'key' : '2495b9337539202227cb9195a6ab2b97', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+        <\/script>
+        <script type="text/javascript" src="https://www.highrevenueformat.com/2495b9337539202227cb9195a6ab2b97/invoke.js"><\/script>
+        </body></html>
+      `);
+      iframeDoc.close();
+      grid.appendChild(adDiv);
+    }
   });
+
+  renderPagination();
+}
+
+// Función para dibujar los botones de las listas (1, 2, 3...)
+function renderPagination() {
+  paginationContainer.innerHTML = '';
+  const totalPages = Math.ceil(filteredGames.length / itemsPerPage);
+  
+  if (totalPages <= 1) return; // Si todo cabe en una página, no mostrar botones
+
+  // Botón Anterior
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'page-btn';
+  prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.onclick = () => { currentPage--; renderPage(); window.scrollTo({top:0, behavior:'smooth'}); };
+  paginationContainer.appendChild(prevBtn);
+
+  // Botones de Números (1, 2, 3...)
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+    btn.textContent = i;
+    btn.onclick = () => { currentPage = i; renderPage(); window.scrollTo({top:0, behavior:'smooth'}); };
+    paginationContainer.appendChild(btn);
+  }
+
+  // Botón Siguiente
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'page-btn';
+  nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.onclick = () => { currentPage++; renderPage(); window.scrollTo({top:0, behavior:'smooth'}); };
+  paginationContainer.appendChild(nextBtn);
 }
 
 function abrirJuego(juego){
@@ -226,13 +305,10 @@ function abrirJuego(juego){
   dLink.href=juego.link||'#';
   shareText.textContent = "Compartir este Juego";
   
-  // --- 1. CARGAR BANNER DE ARRIBA (320x50) ---
   const adTop = document.getElementById('ad-top-container');
   adTop.innerHTML = ''; 
   const iframeTop = document.createElement('iframe');
-  iframeTop.style.width = '320px';
-  iframeTop.style.height = '50px';
-  iframeTop.style.border = 'none';
+  iframeTop.style.width = '320px'; iframeTop.style.height = '50px'; iframeTop.style.border = 'none';
   adTop.appendChild(iframeTop);
   const iframeTopDoc = iframeTop.contentWindow.document;
   iframeTopDoc.open();
@@ -246,13 +322,10 @@ function abrirJuego(juego){
   `);
   iframeTopDoc.close();
 
-  // --- 2. CARGAR BANNER DE ABAJO (300x250) ---
   const adBottom = document.getElementById('ad-bottom-container');
   adBottom.innerHTML = ''; 
   const iframeBottom = document.createElement('iframe');
-  iframeBottom.style.width = '300px';
-  iframeBottom.style.height = '250px';
-  iframeBottom.style.border = 'none';
+  iframeBottom.style.width = '300px'; iframeBottom.style.height = '250px'; iframeBottom.style.border = 'none';
   adBottom.appendChild(iframeBottom);
   const iframeBottomDoc = iframeBottom.contentWindow.document;
   iframeBottomDoc.open();
@@ -282,7 +355,7 @@ shareBtn.onclick = async () => {
   if(!currentGameId) return;
   const url = window.location.origin + window.location.pathname + '?juego=' + currentGameId;
   if (navigator.share) {
-    try { await navigator.share({ title: dTitle.textContent, text: '¡Mira este juego en Gansito!', url: url }); } catch (err) {}
+    try { await navigator.share({ title: dTitle.textContent, text: '¡Mira este juego en Vahn!', url: url }); } catch (err) {}
   } else {
     navigator.clipboard.writeText(url);
     shareText.textContent = "¡Enlace Copiado!";

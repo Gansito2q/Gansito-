@@ -2,64 +2,65 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0f1015"><title>Vahn</title>
+<meta name="theme-color" content="#050505"><title>Vahn</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root{--bg:#0f1015;--card:#1a1b22;--text:#fff;--muted:#9ca3af;--accent:#ff3366;--nav:#15161c;--in:#23242c}
+:root{--bg:#050505;--card:#111111;--text:#fff;--muted:#888;--accent:#ff3366;--nav:#0a0a0a;--in:#1a1a1a}
 [data-theme="light"]{--bg:#f3f4f6;--card:#fff;--text:#111827;--muted:#6b7280;--nav:#fff;--in:#e5e7eb}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
 body{background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
-header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--nav);position:sticky;top:0;z-index:50}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--nav);position:sticky;top:0;z-index:50;will-change:transform}
 .h-left{display:flex;align-items:center;gap:16px}.menu-btn{background:none;border:none;color:var(--text);font-size:1.5rem;cursor:pointer}.logo{font-size:1.8rem;font-weight:800;font-style:italic;letter-spacing:-.5px;color:var(--text)}
-.h-right{display:flex;gap:12px}.icon-btn{border:none;width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer}.btn-outline{background:transparent;border:1px solid rgba(128,128,128,.3);color:var(--text)}.btn-solid{background:var(--in);color:var(--text)}
-.sidebar{position:fixed;top:0;left:-300px;width:280px;height:100vh;background:var(--nav);z-index:200;padding:20px;box-shadow:2px 0 10px rgba(0,0,0,.5);transition:left .3s;display:flex;flex-direction:column;overflow-y:auto}
-.sidebar.open{left:0}.sidebar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.sidebar-header h3{font-size:1.2rem;color:var(--text)}.close-btn{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer}
-.btn-all{background:var(--accent);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:bold;font-size:1rem;cursor:pointer;margin-bottom:15px;width:100%}
-.cat-title{margin-top:20px;margin-bottom:10px;font-size:.9rem;color:var(--muted);font-weight:700;text-transform:uppercase;border-bottom:1px solid rgba(128,128,128,.2);padding-bottom:5px}
-.cat-btn{background:transparent;color:var(--text);border:1px solid rgba(128,128,128,.2);padding:10px 15px;border-radius:8px;font-weight:500;font-size:.9rem;cursor:pointer;text-align:left;margin-bottom:8px;transition:background 0.2s}
+.h-right{display:flex;gap:12px}.icon-btn{border:none;width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer}.btn-outline{background:transparent;border:1px solid rgba(128,128,128,.2);color:var(--text)}.btn-solid{background:var(--in);color:var(--text)}
+.sidebar{position:fixed;top:0;left:-300px;width:280px;height:100vh;background:var(--nav);z-index:200;padding:20px;box-shadow:2px 0 10px rgba(0,0,0,.8);transition:left .3s;display:flex;flex-direction:column;overflow-y:auto;will-change:left}
+.sidebar.open{left:0}.sidebar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.sidebar-header h3{font-size:1.4rem;color:var(--text);display:flex;align-items:center}.close-btn{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer}
+.btn-all{background:var(--accent);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:bold;font-size:1rem;cursor:pointer;margin-bottom:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+.cat-title{margin-top:20px;margin-bottom:10px;font-size:.9rem;color:var(--muted);font-weight:700;text-transform:uppercase;border-bottom:1px solid rgba(128,128,128,.1);padding-bottom:5px}
+.cat-btn{background:transparent;color:var(--text);border:1px solid rgba(128,128,128,.1);padding:10px 15px;border-radius:8px;font-weight:500;font-size:.9rem;cursor:pointer;text-align:left;margin-bottom:8px;transition:background 0.2s}
 .cat-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;display:none;backdrop-filter:blur(2px)}.overlay.open{display:block}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:150;display:none;backdrop-filter:blur(2px)}.overlay.open{display:block}
 .search-bar{padding:0 16px;background:var(--nav);display:none;padding-bottom:12px;border-bottom:1px solid rgba(128,128,128,.1);position:sticky;top:74px;z-index:40}.search-bar.show{display:block}.search-bar input{width:100%;padding:12px 16px;border-radius:8px;border:1px solid var(--in);background:var(--bg);color:var(--text);font-size:1rem;outline:none}
-.hero-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:16px;padding:16px;margin-top:10px}.hero-carousel::-webkit-scrollbar{display:none}
-.hero-card{flex:0 0 85%;scroll-snap-align:center;position:relative;border-radius:16px;overflow:hidden;aspect-ratio:1/1;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+#categoryTitle{display:none;padding:16px 16px 0 16px;font-size:1.6rem;font-weight:800;text-transform:capitalize;color:var(--text)}
+.home-section{transition:opacity .3s}.hide-section{display:none!important}
+.hero-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:16px;padding:16px;margin-top:10px;content-visibility:auto}.hero-carousel::-webkit-scrollbar{display:none}
+.hero-card{flex:0 0 85%;scroll-snap-align:center;position:relative;border-radius:16px;overflow:hidden;aspect-ratio:1/1;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.8);transform:translateZ(0)}
 .hero-card img{width:100%;height:100%;object-fit:cover}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.4) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
 .hero-title{font-size:1.4rem;font-weight:800;text-transform:uppercase;margin-bottom:6px;text-shadow:1px 1px 3px rgba(0,0,0,.8)}
 .hero-desc{font-size:.85rem;color:#d1d5db;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-shadow:1px 1px 2px rgba(0,0,0,.8)}
 .section-title{padding:10px 16px 0 16px;font-size:1.1rem;font-weight:700;color:var(--text);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.row-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:12px;padding:0 16px 16px 16px}.row-carousel::-webkit-scrollbar{display:none}
-.row-card{flex:0 0 130px;scroll-snap-align:start;cursor:pointer;position:relative}
-.row-card img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;background:var(--in);box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.row-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:12px;padding:0 16px 16px 16px;content-visibility:auto}.row-carousel::-webkit-scrollbar{display:none}
+.row-card{flex:0 0 130px;scroll-snap-align:start;cursor:pointer;position:relative;transform:translateZ(0)}
+.row-card img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;background:var(--in);box-shadow:0 4px 10px rgba(0,0,0,.5)}
 .row-title{font-size:.8rem;font-weight:600;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
 .badge-ep{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.8);color:#fff;font-size:.65rem;padding:2px 6px;border-radius:4px;font-weight:bold}
-.grid-carousel{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:0 16px;min-height:250px}
-.grid-card{cursor:pointer;display:flex;flex-direction:column;gap:8px}
-.grid-card img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:12px;background:var(--in);box-shadow:0 4px 10px rgba(0,0,0,.3)}
+.grid-carousel{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;min-height:250px;content-visibility:auto}
+.grid-card{cursor:pointer;display:flex;flex-direction:column;gap:8px;transform:translateZ(0)}
+.grid-card img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:12px;background:var(--in);box-shadow:0 4px 10px rgba(0,0,0,.5)}
 .grid-title{font-size:.9rem;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--text);text-align:center}
 .pagination{display:flex;justify-content:center;gap:12px;padding:20px 16px}
-.page-btn{background:var(--card);color:var(--text);border:1px solid rgba(128,128,128,.2);padding:10px 20px;border-radius:8px;font-weight:bold;font-size:.9rem;cursor:pointer;display:flex;align-items:center;gap:6px}
+.page-btn{background:var(--card);color:var(--text);border:1px solid rgba(128,128,128,.1);padding:10px 20px;border-radius:8px;font-weight:bold;font-size:.9rem;cursor:pointer;display:flex;align-items:center;gap:6px}
 .page-btn:disabled{opacity:.3;cursor:not-allowed}
 .footer-logo{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 40px 20px;opacity:.8}
 .footer-title{font-size:2rem;font-weight:900;font-style:italic;color:var(--muted);display:flex;align-items:center;letter-spacing:-1px}
-.footer-box{background:#444;color:var(--bg);padding:0 8px;border-radius:8px;font-style:normal;margin-left:4px;font-size:1.5rem;font-weight:900;display:flex;align-items:center;justify-content:center;height:32px}
+.footer-box{background:#333;color:var(--bg);padding:0 8px;border-radius:8px;font-style:normal;margin-left:4px;font-size:1.5rem;font-weight:900;display:flex;align-items:center;justify-content:center;height:32px}
 .footer-sub{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.95rem;color:var(--muted);font-weight:500}
 .footer-sub i{color:var(--accent);font-size:1.1rem}
-#gameDetail{display:none;position:fixed;inset:0;background:var(--bg);z-index:100;overflow-y:auto;flex-direction:column}#gameDetail.active{display:flex}
+#gameDetail{display:none;position:fixed;inset:0;background:var(--bg);z-index:100;overflow-y:auto;flex-direction:column;will-change:transform}#gameDetail.active{display:flex}
 .detail-nav{display:flex;align-items:center;gap:12px;padding:16px;background:var(--nav);position:sticky;top:0;z-index:10}
 .btn-back{background:var(--in);border:none;color:var(--text);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer}
 .detail-nav span{font-weight:700;font-size:1.05rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .detail-content{padding:16px 16px 40px 16px;max-width:600px;margin:0 auto;width:100%;display:flex;flex-direction:column}
-.img-container{width:70%;margin:0 auto 20px auto;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.5);background:var(--in);aspect-ratio:2/3}
+.img-container{width:70%;margin:0 auto 20px auto;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.8);background:var(--in);aspect-ratio:2/3}
 .detail-img{width:100%;height:100%;object-fit:cover;display:block}
 .detail-info-title{text-align:center;margin-bottom:15px}.detail-info-title h1{font-size:1.5rem;text-transform:uppercase;color:var(--text)}
 .action-btn-dl{margin-bottom:20px;width:100%}.btn-dl{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;text-decoration:none;padding:16px;border-radius:12px;font-weight:bold;font-size:1.05rem;border:none}
 .detail-info-desc{margin-bottom:20px;text-align:left}.detail-info-desc p{color:var(--muted);font-size:.95rem;line-height:1.6;white-space:pre-wrap}
 .ad-top{display:flex;justify-content:center;align-items:center;width:100%;height:50px;margin-bottom:16px;overflow:hidden}
 .ad-bottom{display:flex;justify-content:center;align-items:center;width:100%;height:250px;margin:20px 0;overflow:hidden}
-.action-btn-share{display:flex;flex-direction:column;gap:12px;margin-top:10px;width:100%}.btn-share{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--in);color:var(--text);text-decoration:none;padding:16px;border-radius:12px;font-weight:bold;font-size:1rem;border:none;cursor:pointer;width:100%}
-.msg{text-align:center;color:var(--muted);padding:40px 0;width:100%}
-#ageGate{position:fixed;inset:0;z-index:9999;background:#0a0a0f;display:flex;align-items:center;justify-content:center;padding:20px}
-.age-box{background:var(--card);padding:30px 20px;border-radius:16px;text-align:center;max-width:400px;width:100%;border:1px solid rgba(255,255,255,.05);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.action-btn-share{display:flex;flex-direction:column;gap:12px;margin-top:10px;width:100%}.btn-share{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--in);color:var(--text);text-decoration:none;padding:16px;border-radius:12px;font-weight:bold;font-size:1rem;border:none;cursor:pointer;width:100%}.msg{text-align:center;color:var(--muted);padding:40px 0;width:100%}
+#ageGate{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;padding:20px}
+.age-box{background:var(--card);padding:30px 20px;border-radius:16px;text-align:center;max-width:400px;width:100%;border:1px solid rgba(255,255,255,.05);box-shadow:0 10px 30px rgba(0,0,0,.8)}
 .age-box h2{font-size:1.5rem;margin-bottom:10px;color:#fff;text-transform:uppercase}
 .age-box p{color:var(--muted);font-size:.95rem;line-height:1.5;margin-bottom:25px}
 .age-btns{display:flex;flex-direction:column;gap:12px}
@@ -70,11 +71,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:16p
 </head>
 <body>
 <div class="overlay" id="sideOverlay"></div>
-<div class="sidebar" id="sidebar"><div class="sidebar-header"><h3>Filtros</h3><button class="close-btn" id="closeSide"><i class="fa-solid fa-xmark"></i></button></div><button class="btn-all" id="btnAll">Ver Todos</button><div class="cat-title">Categorías</div><div id="categoryList"></div></div>
+<div class="sidebar" id="sidebar"><div class="sidebar-header"><h3><i class="fa-solid fa-house"></i></h3><button class="close-btn" id="closeSide"><i class="fa-solid fa-xmark"></i></button></div><button class="btn-all" id="btnAll"><i class="fa-solid fa-house"></i> Inicio</button><div class="cat-title">Categorías</div><div id="categoryList"></div></div>
 <div id="ageGate"><div class="age-box"><h2>Contenido Adulto</h2><p>Este sitio web contiene material para adultos. Para continuar, debes confirmar que tienes al menos 18 años de edad.</p><div class="age-btns"><button class="btn-age-yes" id="btnAgeYes">Sí, soy mayor de 18 años</button><a href="https://www.google.com" class="btn-age-no">No, salir</a></div></div></div>
 <header><div class="h-left"><button class="menu-btn" id="openSide"><i class="fa-solid fa-bars"></i></button><div class="logo">Vahn</div></div><div class="h-right"><button class="icon-btn btn-outline" id="themeBtn"><i class="fa-regular fa-sun" id="themeIcon"></i></button><button class="icon-btn btn-solid" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button></div></header>
 <div class="search-bar" id="searchBar"><input type="text" id="searchInput" placeholder="Buscar videojuego..."></div>
-<div id="mainContent"><div class="hero-carousel" id="heroCarousel"></div><div class="section-title">Recién Agregados</div><div class="row-carousel" id="rowRecientes"></div><div class="section-title">Catálogo Completo</div><div class="grid-carousel" id="rowTodos"></div><div class="pagination" id="pagination"></div><div class="footer-logo"><div class="footer-title">Vahn <span class="footer-box">V</span></div><div class="footer-sub"><i class="fa-solid fa-heart"></i> By fans for fans</div></div></div>
+<div id="mainContent"><div class="home-section" id="secHero"><div class="hero-carousel" id="heroCarousel"></div></div><div class="home-section" id="secRecientes"><div class="section-title">Recién Agregados</div><div class="row-carousel" id="rowRecientes"></div></div><h2 id="categoryTitle"></h2><div class="section-title">Catálogo Completo</div><div class="grid-carousel" id="rowTodos"></div><div class="pagination" id="pagination"></div><div class="footer-logo"><div class="footer-title">Vahn <span class="footer-box">V</span></div><div class="footer-sub"><i class="fa-solid fa-heart"></i> By fans for fans</div></div></div>
 <div id="gameDetail"><div class="detail-nav"><button class="btn-back" id="btnBack"><i class="fa-solid fa-arrow-left"></i></button><span id="dTitleNav">Cargando...</span></div><div class="detail-content"><div class="ad-top" id="ad-top-container"></div><div class="img-container"><img id="dImg" class="detail-img" src=""></div><div class="detail-info-title"><h1 id="dTitle"></h1></div><div class="action-btn-dl"><a id="dLink" class="btn-dl" target="_blank"><i class="fa-solid fa-download"></i> Descargar Juego</a></div><div class="detail-info-desc"><p id="dDesc"></p></div><div class="action-btn-share"><button id="shareBtn" class="btn-share"><i class="fa-solid fa-share-nodes"></i> <span id="shareText">Compartir este Juego</span></button></div><div class="ad-bottom" id="ad-bottom-container"></div></div></div>
 <script type="text/javascript" src="https://pl31891805.profitableratecpmnetwork.com/35/b0/bd/35b0bd6d388d38f80634e7051142ff5e.js"></script>
 <script type="module">
@@ -82,24 +83,24 @@ import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-ap
 import{getFirestore,collection,getDocs,orderBy,query}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyDHIRKn4tTab8gh1hLW0wFUTbX4Ms6PUag",authDomain:"dime-55bdb.firebaseapp.com",projectId:"dime-55bdb",storageBucket:"dime-55bdb.firebasestorage.app",messagingSenderId:"289431258659",appId:"1:289431258659:web:2826041d995d1f79cc5396"};
 const app=initializeApp(firebaseConfig),db=getFirestore(app);
-const gD=document.getElementById('gameDetail'),dI=document.getElementById('dImg'),dT=document.getElementById('dTitle'),dD=document.getElementById('dDesc'),dL=document.getElementById('dLink'),dTN=document.getElementById('dTitleNav'),sB=document.getElementById('shareBtn'),sT=document.getElementById('shareText'),sB2=document.getElementById('sidebar'),sO=document.getElementById('sideOverlay'),pE=document.getElementById('pagination'),cL=document.getElementById('categoryList');
+const gD=document.getElementById('gameDetail'),dI=document.getElementById('dImg'),dT=document.getElementById('dTitle'),dD=document.getElementById('dDesc'),dL=document.getElementById('dLink'),dTN=document.getElementById('dTitleNav'),sB=document.getElementById('shareBtn'),sT=document.getElementById('shareText'),sB2=document.getElementById('sidebar'),sO=document.getElementById('sideOverlay'),pE=document.getElementById('pagination'),cL=document.getElementById('categoryList'),cT=document.getElementById('categoryTitle');
 let allG=[],cId=null,cP=1;const iPP=6,dImg="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400&auto=format&fit=crop";
-
 document.getElementById('openSide').onclick=()=>{sB2.classList.add('open');sO.classList.add('open')};document.getElementById('closeSide').onclick=cS;sO.onclick=cS;
 function cS(){sB2.classList.remove('open');sO.classList.remove('open')}
-document.getElementById('btnAll').onclick=()=>{uUI(allG);cS()};document.getElementById('btnAgeYes').onclick=()=>document.getElementById('ageGate').classList.add('hidden-gate');
-document.getElementById('searchBtn').onclick=()=>{const s=document.getElementById('searchBar');s.classList.toggle('show');if(s.classList.contains('show'))document.getElementById('searchInput').focus();else{document.getElementById('searchInput').value='';uUI(allG)}};
-document.getElementById('searchInput').oninput=(e)=>{const t=e.target.value.toLowerCase();const f=allG.filter(g=>(g.titulo||'').toLowerCase().includes(t));cP=1;uUI(f)};
+function showHome(){cT.style.display='none';cT.textContent='';document.getElementById('secHero').classList.remove('hide-section');document.getElementById('secRecientes').classList.remove('hide-section');uUI(allG);cS()}
+document.getElementById('btnAll').onclick=showHome;document.getElementById('btnAgeYes').onclick=()=>document.getElementById('ageGate').classList.add('hidden-gate');
+document.getElementById('searchBtn').onclick=()=>{const s=document.getElementById('searchBar');s.classList.toggle('show');if(s.classList.contains('show'))document.getElementById('searchInput').focus();else{document.getElementById('searchInput').value='';showHome()}};
+document.getElementById('searchInput').oninput=(e)=>{const t=e.target.value.toLowerCase(),f=allG.filter(g=>(g.titulo||'').toLowerCase().includes(t));cP=1;if(t.length>0){document.getElementById('secHero').classList.add('hide-section');document.getElementById('secRecientes').classList.add('hide-section');cT.style.display='block';cT.textContent='Búsqueda: '+t}else{document.getElementById('secHero').classList.remove('hide-section');document.getElementById('secRecientes').classList.remove('hide-section');cT.style.display='none'}uUI(f)};
 document.getElementById('themeBtn').onclick=()=>{const iL=document.documentElement.getAttribute('data-theme')==='light',i=document.getElementById('themeIcon');if(iL){document.documentElement.removeAttribute('data-theme');i.className='fa-regular fa-sun'}else{document.documentElement.setAttribute('data-theme','light');i.className='fa-regular fa-moon'}};
 async function load(){try{const q=query(collection(db,'videojuegos'),orderBy('fecha','desc')),sn=await getDocs(q);allG=sn.docs.map(d=>({id:d.id,...d.data()}));gC();uUI(allG);const u=new URLSearchParams(window.location.search).get('juego');if(u){const e=allG.find(g=>g.id===u);if(e)aJ(e)}}catch(e){document.getElementById('mainContent').innerHTML='<div class="msg">Error de conexión.</div>'}}
-function gC(){let uT=new Set();allG.forEach(g=>{if(g.etiquetas){g.etiquetas.split(',').forEach(t=>{if(t.trim())uT.add(t.trim())})}});cL.innerHTML='';Array.from(uT).sort().forEach(t=>{const b=document.createElement('button');b.className='cat-btn';b.textContent=t;b.onclick=()=>{const f=allG.filter(g=>(g.etiquetas||'').includes(t));cP=1;uUI(f);cS()};cL.appendChild(b)})}
+function gC(){let uT=new Set();allG.forEach(g=>{if(g.etiquetas){g.etiquetas.split(',').forEach(t=>{if(t.trim())uT.add(t.trim())})}});cL.innerHTML='';Array.from(uT).sort().forEach(t=>{const b=document.createElement('button');b.className='cat-btn';b.textContent=t;b.onclick=()=>{const f=allG.filter(g=>(g.etiquetas||'').includes(t));cP=1;document.getElementById('secHero').classList.add('hide-section');document.getElementById('secRecientes').classList.add('hide-section');cT.style.display='block';cT.textContent=t;uUI(f);cS()};cL.appendChild(b)})}
 function uUI(g){
 const hC=document.getElementById('heroCarousel');hC.innerHTML='';const dS=g.slice(0,4);
-if(dS.length>0){dS.forEach(j=>{const c=document.createElement('div');c.className='hero-card';const p=j.portada?j.portada:dImg;c.innerHTML=`<img src="${p}" alt="${j.titulo}"><div class="hero-overlay"><div class="hero-title">${j.titulo||'Sin título'}</div><div class="hero-desc">${j.descripcion||'Sin descripción'}</div></div>`;c.onclick=()=>aJ(j);hC.appendChild(c)})}else{hC.innerHTML='<div class="msg">No hay juegos.</div>'}
+if(dS.length>0){dS.forEach(j=>{const c=document.createElement('div');c.className='hero-card';const p=j.portada?j.portada:dImg;c.innerHTML=`<img src="${p}" loading="lazy" alt="${j.titulo}"><div class="hero-overlay"><div class="hero-title">${j.titulo||'Sin título'}</div><div class="hero-desc">${j.descripcion||'Sin descripción'}</div></div>`;c.onclick=()=>aJ(j);hC.appendChild(c)})}else{hC.innerHTML='<div class="msg">No hay juegos.</div>'}
 const rR=document.getElementById('rowRecientes');rR.innerHTML='';const rC=g.slice(0,7);
-rC.forEach(j=>{const c=document.createElement('div');c.className='row-card';const p=j.portada?j.portada:dImg;c.innerHTML=`<img src="${p}" alt="${j.titulo}"><div class="badge-ep">Juego</div><div class="row-title">${j.titulo||'Sin título'}</div>`;c.onclick=()=>aJ(j);rR.appendChild(c)});
+rC.forEach(j=>{const c=document.createElement('div');c.className='row-card';const p=j.portada?j.portada:dImg;c.innerHTML=`<img src="${p}" loading="lazy" alt="${j.titulo}"><div class="badge-ep">Juego</div><div class="row-title">${j.titulo||'Sin título'}</div>`;c.onclick=()=>aJ(j);rR.appendChild(c)});
 const sI=(cP-1)*iPP,pG=g.slice(sI,sI+iPP),rT=document.getElementById('rowTodos');rT.innerHTML='';
-if(pG.length===0){rT.innerHTML='<div class="msg" style="grid-column:1/-1;">No hay más juegos.</div>'}else{pG.forEach(j=>{const c=document.createElement('div');c.className='grid-card';const p=j.portada?j.portada:dImg;c.innerHTML=`<img src="${p}" alt="${j.titulo}"><div class="grid-title">${j.titulo||'Sin título'}</div>`;c.onclick=()=>aJ(j);rT.appendChild(c)})}
+if(pG.length===0){rT.innerHTML='<div class="msg" style="grid-column:1/-1;">No hay más juegos.</div>'}else{pG.forEach(j=>{const c=document.createElement('div');c.className='grid-card';const p=j.portada?j.portada:dImg;c.innerHTML=`<img src="${p}" loading="lazy" alt="${j.titulo}"><div class="grid-title">${j.titulo||'Sin título'}</div>`;c.onclick=()=>aJ(j);rT.appendChild(c)})}
 rPg(g.length)}
 function rPg(t){pE.innerHTML='';const tP=Math.ceil(t/iPP);if(tP<=1)return;const p=document.createElement('button');p.className='page-btn';p.innerHTML='<i class="fa-solid fa-chevron-left"></i> Anterior';p.disabled=cP===1;p.onclick=()=>{cP--;uUI(allG);document.getElementById('rowTodos').scrollIntoView({behavior:'smooth'})};pE.appendChild(p);
 const s=document.createElement('span');s.style.color='var(--text)';s.style.fontSize='.9rem';s.style.alignSelf='center';s.textContent=`Pág. ${cP} / ${tP}`;pE.appendChild(s);
